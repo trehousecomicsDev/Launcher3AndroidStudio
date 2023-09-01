@@ -16,7 +16,7 @@ If you don't know how to compile the android source code, you can refer to [Goog
 ## 2. place framework.jar
 Create a new `libs` directory. In this article, I renamed it to `freeme-framework.jar` and put it in this `libs` directory.
 
-## 3. 修改build.gradle
+## 3. modify build.gradle
 
 ```groovy
 dependencies {
