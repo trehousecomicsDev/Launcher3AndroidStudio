@@ -1,34 +1,34 @@
 # Launcher3
 
-​        本工程旨在创建一个可以在Android Studio中编译、调试的Launcher3工程。如果有其他Android App有同样的需求，可做参考。 
+​        This project aims to create a Launcher3 project that can be compiled and debugged in Android Studio. If there are other Android Apps that have the same requirements, it can be used as a reference.
 
- 	由于Launcher3使用了一些私有的API,比如`android.app.WallpaperColors`,这些导致Android Studio使用标准的sdk编译不过。
+ 	Since Launcher3 uses some private APIs, such as `android.app.WallpaperColors`, these cause Android Studio to use the standard sdk to compile.
 
-## 1. 获取framework.jar
-`framework.jar`可通过编译android官方的aosp工程获得，编译时间较长。生成的路径为：
+## 1.get-framework.jar
+`framework.jar` can be obtained by compiling the official aosp project of android, and the compiling time is relatively long. The generated path is：
 
 ```java
 out/target/common/obj/JAVA_LIBRARIES/framework_intermediates/classes.jar
 ```
 
-如果不知道如何编译android源码，可参考[Google官方构建编译环境指南](https://source.android.com/source/initializing)，当然如果不敢兴趣，可使用我上传的`freeme-framework.jar`.
+If you don't know how to compile the android source code, you can refer to [Google Official Build Compilation Environment Guidelines](https://source.android.com/source/initializing)，Of course, if you are not interested, you can use the one I uploaded `freeme-framework.jar`.
 
-## 2. 放置framework.jar
-新建`libs`目录，在本文我重命名为 `freeme-framework.jar`并放在此`libs`目录。
+## 2. place framework.jar
+Create a new `libs` directory. In this article, I renamed it to `freeme-framework.jar` and put it in this `libs` directory.
 
 ## 3. 修改build.gradle
 
 ```groovy
 dependencies {
-    //provided是指这个库仅仅在编译时使用，但最终不会被编译到apk或aar里
+    //provided It means that this library is only used at compile time, but will not be compiled into apk or aar in the end
     provided files('libs/freeme-framework.jar')
     
     ...
 }
 
-//添加此处配置,意在调整编译时优先加载freeme-framework.jar，这样才能让使用某个公共类中的私有api不会报错
-//-Xbootclasspath/p是java编址的优先寻址设置
-//"Xbootclasspath/p"后接的路径，是相对于当前Project的根目录的相对路径
+//Adding the configuration here is intended to adjust the loading of freeme-framework.jar first when compiling, so that the use of a private API in a public class will not report an error
+//-Xbootclasspath/p is the priority addressing setting of java addressing
+//The path followed by "Xbootclasspath/p" is a relative path relative to the root directory of the current Project
 gradle.projectsEvaluated {
     tasks.withType(JavaCompile) {
         options.compilerArgs << '-Xbootclasspath/p:libs/freeme-framework.jar'
@@ -36,5 +36,5 @@ gradle.projectsEvaluated {
 }
 ```
 
-## 最后，就可以顺利运行了
+## Finally, it can run smoothly
 
